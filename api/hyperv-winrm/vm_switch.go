@@ -3,8 +3,9 @@ package hyperv_winrm
 import (
 	"context"
 	"encoding/json"
-	"github.com/taliesins/terraform-provider-hyperv/api"
 	"text/template"
+
+	"github.com/taliesins/terraform-provider-hyperv/api"
 )
 
 type existsVMSwitchArgs struct {
@@ -87,11 +88,12 @@ $SetVmSwitchArgs.DefaultQueueVmmqEnabled=$vmSwitch.DefaultQueueVmmqEnabled
 $SetVmSwitchArgs.DefaultQueueVmmqQueuePairs=$vmSwitch.DefaultQueueVmmqQueuePairs
 $SetVmSwitchArgs.DefaultQueueVrssEnabled=$vmSwitch.DefaultQueueVrssEnabled
 
-Set-VMSwitch @SetVmSwitchArgs
+Set-VMSwitch @SetVmSwitchArgs -ErrorAction SilentlyContinue | Out-Null
 
 if ($vmSwitch.VlanID -ne 0){
 	Get-VMNetworkAdapter -SwitchName $vmSwitch.Name -ManagementOS | Set-VMNetworkAdapterVlan -Access -VlanID $vmSwitch.VlanID
 }
+
 
 `))
 
@@ -129,6 +131,7 @@ func (c *ClientConfig) CreateVMSwitch(
 		DefaultQueueVmmqEnabled:             defaultQueueVmmqEnabled,
 		DefaultQueueVmmqQueuePairs:          defaultQueueVmmqQueuePairs,
 		DefaultQueueVrssEnabled:             defaultQueueVrssEnabled,
+		VlanID:                              vlanid,
 	})
 
 	if err != nil {
@@ -233,7 +236,7 @@ $SetVmSwitchArgs.DefaultQueueVmmqEnabled=$vmSwitch.DefaultQueueVmmqEnabled
 $SetVmSwitchArgs.DefaultQueueVmmqQueuePairs=$vmSwitch.DefaultQueueVmmqQueuePairs
 $SetVmSwitchArgs.DefaultQueueVrssEnabled=$vmSwitch.DefaultQueueVrssEnabled
 
-Set-VMSwitch @SetVmSwitchArgs
+Set-VMSwitch @SetVmSwitchArgs -ErrorAction SilentlyContinue | Out-Null
 
 if ($vmSwitch.VlanID -ne 0){
 	Get-VMNetworkAdapter -SwitchName $vmSwitch.Name -ManagementOS | Set-VMNetworkAdapterVlan -Access -VlanID $vmSwitch.VlanID

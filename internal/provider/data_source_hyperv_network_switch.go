@@ -120,6 +120,13 @@ func dataSourceHyperVNetworkSwitch() *schema.Resource {
 				Default:     false,
 				Description: "Should Virtual Receive Side Scaling be enabled. This configuration allows the load from a virtual network adapter to be distributed across multiple virtual processors in a virtual machine (VM), allowing the VM to process more network traffic more rapidly than it can with a single logical processor.",
 			},
+			"vlan_id": {
+				Type:             schema.TypeInt,
+				Optional:         true,
+				Default:          0,
+				ValidateDiagFunc: IntBetween(1, 4094),
+				Description:      "Should be a value between `1` to `4094`. Specifies the VLAN ID to use for the virtual switch. Specify a value for this parameter only if VLAN tagging at the switch is required.",
+			},
 		},
 	}
 }
@@ -238,6 +245,9 @@ func datasourceHyperVNetworkSwitchRead(ctx context.Context, d *schema.ResourceDa
 		return diag.FromErr(err)
 	}
 	if err := d.Set("default_queue_vrss_enabled", s.DefaultQueueVrssEnabled); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("vlan_id", s.VlanID); err != nil {
 		return diag.FromErr(err)
 	}
 

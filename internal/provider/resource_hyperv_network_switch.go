@@ -145,7 +145,7 @@ func resourceHyperVNetworkSwitch() *schema.Resource {
 				Default:          0,
 				ValidateDiagFunc: IntBetween(1, 4094),
 				Description:      "Should be a value between `1` to `4094`. Specifies the VLAN ID to use for the virtual switch. Specify a value for this parameter only if VLAN tagging at the switch is required.",
-			}
+			},
 		},
 	}
 }
@@ -191,7 +191,7 @@ func resourceHyperVNetworkSwitchCreate(ctx context.Context, d *schema.ResourceDa
 	defaultQueueVmmqEnabled := (d.Get("default_queue_vmmq_enabled")).(bool)
 	defaultQueueVmmqQueuePairs := int32((d.Get("default_queue_vmmq_queue_pairs")).(int))
 	defaultQueueVrssEnabled := (d.Get("default_queue_vrss_enabled")).(bool)
-	vlanID := int64((d.Get("vlan_id")).(int))
+	vlanID := int32((d.Get("vlan_id")).(int))
 
 	if switchType == api.VMSwitchType_Private {
 		if allowManagementOS {
@@ -242,7 +242,7 @@ func resourceHyperVNetworkSwitchCreate(ctx context.Context, d *schema.ResourceDa
 		return diag.Errorf("[ERROR][hyperv][create] defaultQueueVmmqQueuePairs must be greater then 0")
 	}
 
-	err := c.CreateVMSwitch(ctx, switchName, notes, allowManagementOS, embeddedTeamingEnabled, iovEnabled, packetDirectEnabled, bandwidthReservationMode, switchType, netAdapterNames, defaultFlowMinimumBandwidthAbsolute, defaultFlowMinimumBandwidthWeight, defaultQueueVmmqEnabled, defaultQueueVmmqQueuePairs, defaultQueueVrssEnabled)
+	err := c.CreateVMSwitch(ctx, switchName, notes, allowManagementOS, embeddedTeamingEnabled, iovEnabled, packetDirectEnabled, bandwidthReservationMode, switchType, netAdapterNames, defaultFlowMinimumBandwidthAbsolute, defaultFlowMinimumBandwidthWeight, defaultQueueVmmqEnabled, defaultQueueVmmqQueuePairs, defaultQueueVrssEnabled, vlanID)
 
 	if err != nil {
 		return diag.FromErr(err)
