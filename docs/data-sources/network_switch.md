@@ -42,6 +42,7 @@ datasource "hyperv_network_switch" "default" {
 - `notes` (String) Specifies a note to be associated with the switch.
 - `switch_type` (String) Valid values to use are `Internal`, `Private` and `External`. Specifies the type of the switch to be created.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `vlan_id` (Number) The native VLAN ID for the switch, this can be a value ranging from `1` to `4094`.
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`

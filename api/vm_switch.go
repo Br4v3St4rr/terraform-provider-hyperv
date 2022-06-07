@@ -142,6 +142,7 @@ type VmSwitch struct {
 	DefaultQueueVmmqEnabled             bool
 	DefaultQueueVmmqQueuePairs          int32
 	DefaultQueueVrssEnabled             bool
+	VlanID								int32
 }
 
 type HypervVmSwitchClient interface {
@@ -162,6 +163,7 @@ type HypervVmSwitchClient interface {
 		defaultQueueVmmqEnabled bool,
 		defaultQueueVmmqQueuePairs int32,
 		defaultQueueVrssEnabled bool,
+		vlanID int32,
 	) (err error)
 	GetVMSwitch(ctx context.Context, name string) (result VmSwitch, err error)
 	UpdateVMSwitch(

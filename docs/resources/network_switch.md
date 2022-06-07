@@ -28,6 +28,7 @@ resource "hyperv_network_switch" "default" {
   default_queue_vmmq_enabled              = false
   default_queue_vmmq_queue_pairs          = 16
   default_queue_vrss_enabled              = false
+  vlan_id                                 = 100
 }
 ```
 
@@ -55,6 +56,7 @@ resource "hyperv_network_switch" "default" {
 - `notes` (String) Specifies a note to be associated with the switch to be created.
 - `switch_type` (String) Specifies the type of the switch to be created. Valid values to use are `Internal`, `Private` and `External`.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `vlan_id` (Number) The native VLAN ID for the switch, this can be a value ranging from `1` to `4094`.
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`

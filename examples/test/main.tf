@@ -13,4 +13,5 @@ provider "hyperv" {
 
 data "hyperv_network_switch" "dmz_network_switch" {
   name = "dmz"
+  vlan_id = 10
 }
