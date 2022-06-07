@@ -89,6 +89,10 @@ $SetVmSwitchArgs.DefaultQueueVrssEnabled=$vmSwitch.DefaultQueueVrssEnabled
 
 Set-VMSwitch @SetVmSwitchArgs
 
+if ($vmSwitch.VlanID -ne 0){
+	Get-VMNetworkAdapter -SwitchName $vmSwitch.Name -ManagementOS | Set-VMNetworkAdapterVlan -Access -VlanID $vmSwitch.VlanID
+}
+
 `))
 
 func (c *ClientConfig) CreateVMSwitch(
@@ -107,6 +111,7 @@ func (c *ClientConfig) CreateVMSwitch(
 	defaultQueueVmmqEnabled bool,
 	defaultQueueVmmqQueuePairs int32,
 	defaultQueueVrssEnabled bool,
+	vlanid int32,
 ) (err error) {
 
 	vmSwitchJson, err := json.Marshal(api.VmSwitch{
@@ -229,6 +234,10 @@ $SetVmSwitchArgs.DefaultQueueVmmqQueuePairs=$vmSwitch.DefaultQueueVmmqQueuePairs
 $SetVmSwitchArgs.DefaultQueueVrssEnabled=$vmSwitch.DefaultQueueVrssEnabled
 
 Set-VMSwitch @SetVmSwitchArgs
+
+if ($vmSwitch.VlanID -ne 0){
+	Get-VMNetworkAdapter -SwitchName $vmSwitch.Name -ManagementOS | Set-VMNetworkAdapterVlan -Access -VlanID $vmSwitch.VlanID
+}
 `))
 
 func (c *ClientConfig) UpdateVMSwitch(
